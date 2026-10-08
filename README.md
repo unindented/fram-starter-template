@@ -2,6 +2,10 @@
 
 This is a starter template for [fram](https://github.com/unindented/fram-c17), a small static photo and video gallery generator. Fork it, add your media, and publish the generated site.
 
+| Album                                                                                   | Viewer                                                                                           |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| ![Photo album with thumbnails displayed in a grid](static/images/screenshot-wide-1.jpg) | ![Photo viewer with a filmstrip of the album at the bottom](static/images/screenshot-wide-2.jpg) |
+
 ## Contents
 
 ```text
