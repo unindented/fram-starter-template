@@ -1,0 +1,74 @@
+{
+  "name": "Fram",
+  "short_name": "Fram",
+  "description": "A small static photo and video gallery generator, written in C17.",
+  "theme_color": "#1e1e2e",
+  "background_color": "#1e1e2e",
+  "start_url": "/?source=pwa",
+  "display": "minimal-ui",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/icon-maskable-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-wide-1.jpg",
+      "sizes": "1024x768",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Photo album with thumbnails displayed in a grid"
+    },
+    {
+      "src": "/images/screenshot-wide-2.jpg",
+      "sizes": "1024x768",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Photo viewer with a filmstrip of the album at the bottom"
+    },
+    {
+      "src": "/images/screenshot-narrow-1.jpg",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Photo album with thumbnails displayed in a grid"
+    },
+    {
+      "src": "/images/screenshot-narrow-2.jpg",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Photo viewer with a filmstrip of the album at the bottom"
+    }
+  ]
+}
