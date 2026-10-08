@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="generator" content="{{generator}}">
+  <title>{{#album.parent}}{{album.title}} - {{/album.parent}}{{gallery.title}}</title>
+  <link rel="stylesheet" href="{{path_to_root}}css/fram.css">
+  <link rel="icon" href="{{path_to_root}}favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{path_to_root}}apple-touch-icon.png">
+  <link rel="manifest" href="{{path_to_root}}manifest.webmanifest">
+</head>
+<body>
+  {{> header}}
+  <main>
+    {{#has_sub_albums}}
+    <ul class="gallery-grid">
+      {{#sub_albums}}
+      <li>
+        <a class="gallery-grid__item" href="{{url}}">
+          <img class="gallery-grid__image"
+            src="{{cover.m.url}}"
+            width="{{cover.m.width}}"
+            height="{{cover.m.height}}"
+            alt="{{title}}"
+            loading="lazy">
+          <span class="gallery-grid__caption">
+            <span class="gallery-grid__title" aria-hidden="true">{{title}}</span>
+            <small class="gallery-grid__count">{{item_count}} items</small>
+          </span>
+        </a>
+      </li>
+      {{/sub_albums}}
+    </ul>
+    {{/has_sub_albums}}
+
+    {{#has_media}}
+    <fram-lightbox class="gallery-grid" label="{{album.title}}" slideshow-delay-ms="5000">
+      {{#media}}
+      <a class="gallery-grid__item{{#is_video}} gallery-grid__item--video{{/is_video}}"
+        href="{{original_url}}"
+        data-small-src="{{s.url}}"
+        data-small-width="{{s.width}}"
+        data-small-height="{{s.height}}"
+        data-large-src="{{l.url}}"
+        data-large-width="{{l.width}}"
+        data-large-height="{{l.height}}"
+        {{#is_video}}type="video/mp4"{{/is_video}}>
+          <img class="gallery-grid__image"
+            src="{{m.url}}"
+            width="{{m.width}}"
+            height="{{m.height}}"
+            alt="{{title}}"
+            loading="lazy">
+          <span class="gallery-grid__caption">
+            <span class="gallery-grid__title" aria-hidden="true">{{title}}</span>
+          </span>
+      </a>
+      {{/media}}
+    </fram-lightbox>
+    {{/has_media}}
+  </main>
+  {{> footer}}
+  <script defer src="{{path_to_root}}js/fram-lightbox.js"></script>
+</body>
+</html>

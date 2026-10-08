@@ -1,0 +1,22 @@
+title = "My Gallery"
+author = "Daniel Perez Alvarez"
+
+input_dir = "media"
+output_dir = "docs"
+
+[derivatives.s]
+width = 120
+height = 120
+quality = 70
+crop = true
+
+[derivatives.m]
+width = 520
+height = 360
+quality = 80
+crop = true
+
+[derivatives.l]
+width = 792
+height = 594
+quality = 85
