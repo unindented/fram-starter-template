@@ -220,7 +220,8 @@ class FramLightbox extends HTMLElement {
   }
 
   /**
-   * Makes the video for a video link. The video does not load until the user plays it.
+   * Makes the video for a video link. The video does not load until the user plays it, and its
+   * poster does not load until `#loadPosters` sets it.
    *
    * @param {HTMLAnchorElement} link - The video link.
    * @returns {HTMLVideoElement} The new video.
@@ -231,7 +232,6 @@ class FramLightbox extends HTMLElement {
       className: "lightbox__media",
       controls: true,
       height: Number(link.dataset.largeHeight),
-      poster: link.dataset.largeSrc,
       preload: "none",
       src: link.href,
       width: Number(link.dataset.largeWidth),
@@ -483,7 +483,8 @@ class FramLightbox extends HTMLElement {
   }
 
   /**
-   * Makes a slide current, and updates the controls, the strip, and the slideshow wait for it.
+   * Makes a slide current, and updates the controls, the strip, the posters, and the slideshow wait
+   * for it.
    *
    * @param {number} index - The index of the new current slide.
    */
@@ -494,7 +495,24 @@ class FramLightbox extends HTMLElement {
     }
     this.#updateControls(index);
     this.#updateStrip(index);
+    this.#loadPosters(index);
     this.#scheduleSlideshowStep();
+  }
+
+  /**
+   * Sets the posters of the videos in a slide and its neighbors. The browser loads a poster as
+   * soon as the video has one, even in a closed lightbox, so the videos get them only near the
+   * current slide.
+   *
+   * @param {number} index - The index of the current slide.
+   */
+  #loadPosters(index) {
+    for (const i of [index - 1, index, index + 1]) {
+      const video = this.#slides[i]?.querySelector("video");
+      if (video && !video.poster) {
+        video.poster = this.#links[i].dataset.largeSrc ?? "";
+      }
+    }
   }
 
   /**
