@@ -168,7 +168,11 @@ a {
   padding: 0;
 }
 
-.gallery-grid + .gallery-grid {
+fram-lightbox {
+  display: block;
+}
+
+.gallery-grid + fram-lightbox > .gallery-grid {
   margin-block-start: var(--spacing-albums-media);
 }
 

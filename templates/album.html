@@ -35,28 +35,32 @@
     {{/has_sub_albums}}
 
     {{#has_media}}
-    <fram-lightbox class="gallery-grid" label="{{album.title}}" slideshow-delay-ms="5000">
-      {{#media}}
-      <a class="gallery-grid__item{{#is_video}} gallery-grid__item--video{{/is_video}}"
-        href="{{original_url}}"
-        data-small-src="{{s.url}}"
-        data-small-width="{{s.width}}"
-        data-small-height="{{s.height}}"
-        data-large-src="{{l.url}}"
-        data-large-width="{{l.width}}"
-        data-large-height="{{l.height}}"
-        {{#is_video}}type="video/mp4"{{/is_video}}>
-          <img class="gallery-grid__image"
-            src="{{m.url}}"
-            width="{{m.width}}"
-            height="{{m.height}}"
-            alt="{{title}}"
-            loading="lazy">
-          <span class="gallery-grid__caption">
-            <span class="gallery-grid__title" aria-hidden="true">{{title}}</span>
-          </span>
-      </a>
-      {{/media}}
+    <fram-lightbox label="{{album.title}}" slideshow-delay-ms="5000">
+      <ul class="gallery-grid">
+        {{#media}}
+        <li>
+          <a class="gallery-grid__item{{#is_video}} gallery-grid__item--video{{/is_video}}"
+            href="{{original_url}}"
+            data-small-src="{{s.url}}"
+            data-small-width="{{s.width}}"
+            data-small-height="{{s.height}}"
+            data-large-src="{{l.url}}"
+            data-large-width="{{l.width}}"
+            data-large-height="{{l.height}}"
+            {{#is_video}}type="video/mp4"{{/is_video}}>
+            <img class="gallery-grid__image"
+              src="{{m.url}}"
+              width="{{m.width}}"
+              height="{{m.height}}"
+              alt="{{title}}"
+              loading="lazy">
+            <span class="gallery-grid__caption">
+              <span class="gallery-grid__title" aria-hidden="true">{{title}}</span>
+            </span>
+          </a>
+        </li>
+        {{/media}}
+      </ul>
     </fram-lightbox>
     {{/has_media}}
   </main>

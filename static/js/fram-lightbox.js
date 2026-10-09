@@ -14,8 +14,8 @@
 /** @typedef {keyof typeof FramLightbox.ICON_PATHS} IconName */
 
 /**
- * A lightbox for a gallery of links. Each child link points to an original file and holds a
- * thumbnail image. Without JavaScript, the links open the original files.
+ * A lightbox for a list of links. Each link is in an item of the child list, points to an original
+ * file, and holds a thumbnail image. Without JavaScript, the links open the original files.
  *
  * Each link gives its images in data attributes:
  * - `data-large-src`: the image that the lightbox shows. For a video, this image is the poster.
@@ -62,7 +62,7 @@ class FramLightbox extends HTMLElement {
   };
 
   /**
-   * The child links, one for each slide.
+   * The links in the child list, one for each slide.
    *
    * @type {HTMLAnchorElement[]}
    */
@@ -114,7 +114,7 @@ class FramLightbox extends HTMLElement {
     if (this.#dialog.isConnected) {
       return;
     }
-    this.#links = /** @type {HTMLAnchorElement[]} */ ([...this.querySelectorAll(":scope > a")]);
+    this.#links = /** @type {HTMLAnchorElement[]} */ ([...this.querySelectorAll(":scope > ul > li > a")]);
     this.#build();
   }
 
