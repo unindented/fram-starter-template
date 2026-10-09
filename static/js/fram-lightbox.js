@@ -8,6 +8,7 @@
  * @property {HTMLButtonElement} previous
  * @property {HTMLButtonElement} slideshow
  * @property {HTMLUListElement} slides
+ * @property {HTMLParagraphElement} status
  * @property {HTMLDivElement} strip
  */
 
@@ -167,11 +168,12 @@ class FramLightbox extends HTMLElement {
       <button type="button" class="lightbox__previous" aria-label="Previous">
         ${this.#renderIcon("previous")}
       </button>
-      <ul class="lightbox__slides" tabindex="0" autofocus></ul>
+      <ul class="lightbox__slides" tabindex="0" autofocus aria-label="Slides"></ul>
       <button type="button" class="lightbox__next" aria-label="Next">
         ${this.#renderIcon("next")}
       </button>
-      <div class="lightbox__strip" role="group" aria-label="Nearby pictures"></div>`,
+      <div class="lightbox__strip" role="group" aria-label="Nearby pictures"></div>
+      <p class="lightbox__status" aria-live="polite"></p>`,
     });
     this.append(this.#dialog);
   }
@@ -345,7 +347,8 @@ class FramLightbox extends HTMLElement {
 
   /**
    * Starts or stops the slideshow. The button shows the action that it does next: pause while the
-   * slideshow plays, and play at all other times.
+   * slideshow plays, and play at all other times. The status is silent while the slideshow plays,
+   * so a screen reader does not announce each step.
    *
    * @param {boolean} isPlaying - True to start the slideshow, false to stop it.
    */
@@ -354,6 +357,7 @@ class FramLightbox extends HTMLElement {
     this.#isSlideshowPlaying = isPlaying;
     button.ariaLabel = isPlaying ? "Pause slideshow" : "Play slideshow";
     button.innerHTML = this.#renderIcon(isPlaying ? "pause" : "play");
+    this.#part("status").ariaLive = isPlaying ? "off" : "polite";
     this.#scheduleSlideshowStep();
   }
 
@@ -483,8 +487,8 @@ class FramLightbox extends HTMLElement {
   }
 
   /**
-   * Makes a slide current, and updates the controls, the strip, the posters, and the slideshow wait
-   * for it.
+   * Makes a slide current, and updates the controls, the strip, the status, the posters, and the
+   * slideshow wait for it.
    *
    * @param {number} index - The index of the new current slide.
    */
@@ -495,8 +499,20 @@ class FramLightbox extends HTMLElement {
     }
     this.#updateControls(index);
     this.#updateStrip(index);
+    this.#updateStatus(index);
     this.#loadPosters(index);
     this.#scheduleSlideshowStep();
+  }
+
+  /**
+   * Tells a screen reader which slide is current. Arrow keys move the slides but keep the focus
+   * on the track, so a screen reader does not announce the new slide on its own.
+   *
+   * @param {number} index - The index of the current slide.
+   */
+  #updateStatus(index) {
+    this.#part("status").textContent =
+      `${index + 1} of ${this.#links.length}: ${this.#titleOf(this.#links[index])}`;
   }
 
   /**
