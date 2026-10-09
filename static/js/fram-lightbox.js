@@ -8,7 +8,7 @@
  * @property {HTMLButtonElement} previous
  * @property {HTMLButtonElement} slideshow
  * @property {HTMLUListElement} slides
- * @property {HTMLElement} strip
+ * @property {HTMLDivElement} strip
  */
 
 /** @typedef {keyof typeof FramLightbox.ICON_PATHS} IconName */
@@ -171,7 +171,7 @@ class FramLightbox extends HTMLElement {
       <button type="button" class="lightbox__next" aria-label="Next">
         ${this.#renderIcon("next")}
       </button>
-      <nav class="lightbox__strip" aria-label="Nearby pictures"></nav>`,
+      <div class="lightbox__strip" role="group" aria-label="Nearby pictures"></div>`,
     });
     this.append(this.#dialog);
   }
