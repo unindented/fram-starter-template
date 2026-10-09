@@ -13,12 +13,6 @@
   margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-}
-
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
