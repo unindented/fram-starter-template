@@ -8,14 +8,15 @@
  * @property {HTMLButtonElement} previous
  * @property {HTMLButtonElement} slideshow
  * @property {HTMLUListElement} slides
- * @property {HTMLElement} strip
+ * @property {HTMLParagraphElement} status
+ * @property {HTMLDivElement} strip
  */
 
 /** @typedef {keyof typeof FramLightbox.ICON_PATHS} IconName */
 
 /**
- * A lightbox for a gallery of links. Each child link points to an original file and holds a
- * thumbnail image. Without JavaScript, the links open the original files.
+ * A lightbox for a list of links. Each link is in an item of the child list, points to an original
+ * file, and holds a thumbnail image. Without JavaScript, the links open the original files.
  *
  * Each link gives its images in data attributes:
  * - `data-large-src`: the image that the lightbox shows. For a video, this image is the poster.
@@ -62,7 +63,7 @@ class FramLightbox extends HTMLElement {
   };
 
   /**
-   * The child links, one for each slide.
+   * The links in the child list, one for each slide.
    *
    * @type {HTMLAnchorElement[]}
    */
@@ -114,7 +115,7 @@ class FramLightbox extends HTMLElement {
     if (this.#dialog.isConnected) {
       return;
     }
-    this.#links = /** @type {HTMLAnchorElement[]} */ ([...this.querySelectorAll(":scope > a")]);
+    this.#links = /** @type {HTMLAnchorElement[]} */ ([...this.querySelectorAll(":scope > ul > li > a")]);
     this.#build();
   }
 
@@ -167,11 +168,12 @@ class FramLightbox extends HTMLElement {
       <button type="button" class="lightbox__previous" aria-label="Previous">
         ${this.#renderIcon("previous")}
       </button>
-      <ul class="lightbox__slides" tabindex="0" autofocus></ul>
+      <ul class="lightbox__slides" tabindex="0" autofocus aria-label="Slides"></ul>
       <button type="button" class="lightbox__next" aria-label="Next">
         ${this.#renderIcon("next")}
       </button>
-      <nav class="lightbox__strip" aria-label="Nearby pictures"></nav>`,
+      <div class="lightbox__strip" role="group" aria-label="Nearby pictures"></div>
+      <p class="lightbox__status" aria-live="polite"></p>`,
     });
     this.append(this.#dialog);
   }
@@ -220,7 +222,8 @@ class FramLightbox extends HTMLElement {
   }
 
   /**
-   * Makes the video for a video link. The video does not load until the user plays it.
+   * Makes the video for a video link. The video does not load until the user plays it, and its
+   * poster does not load until `#loadPosters` sets it.
    *
    * @param {HTMLAnchorElement} link - The video link.
    * @returns {HTMLVideoElement} The new video.
@@ -231,7 +234,6 @@ class FramLightbox extends HTMLElement {
       className: "lightbox__media",
       controls: true,
       height: Number(link.dataset.largeHeight),
-      poster: link.dataset.largeSrc,
       preload: "none",
       src: link.href,
       width: Number(link.dataset.largeWidth),
@@ -345,7 +347,8 @@ class FramLightbox extends HTMLElement {
 
   /**
    * Starts or stops the slideshow. The button shows the action that it does next: pause while the
-   * slideshow plays, and play at all other times.
+   * slideshow plays, and play at all other times. The status is silent while the slideshow plays,
+   * so a screen reader does not announce each step.
    *
    * @param {boolean} isPlaying - True to start the slideshow, false to stop it.
    */
@@ -354,6 +357,7 @@ class FramLightbox extends HTMLElement {
     this.#isSlideshowPlaying = isPlaying;
     button.ariaLabel = isPlaying ? "Pause slideshow" : "Play slideshow";
     button.innerHTML = this.#renderIcon(isPlaying ? "pause" : "play");
+    this.#part("status").ariaLive = isPlaying ? "off" : "polite";
     this.#scheduleSlideshowStep();
   }
 
@@ -483,7 +487,8 @@ class FramLightbox extends HTMLElement {
   }
 
   /**
-   * Makes a slide current, and updates the controls, the strip, and the slideshow wait for it.
+   * Makes a slide current, and updates the controls, the strip, the status, the posters, and the
+   * slideshow wait for it.
    *
    * @param {number} index - The index of the new current slide.
    */
@@ -494,7 +499,36 @@ class FramLightbox extends HTMLElement {
     }
     this.#updateControls(index);
     this.#updateStrip(index);
+    this.#updateStatus(index);
+    this.#loadPosters(index);
     this.#scheduleSlideshowStep();
+  }
+
+  /**
+   * Tells a screen reader which slide is current. Arrow keys move the slides but keep the focus
+   * on the track, so a screen reader does not announce the new slide on its own.
+   *
+   * @param {number} index - The index of the current slide.
+   */
+  #updateStatus(index) {
+    this.#part("status").textContent =
+      `${index + 1} of ${this.#links.length}: ${this.#titleOf(this.#links[index])}`;
+  }
+
+  /**
+   * Sets the posters of the videos in a slide and its neighbors. The browser loads a poster as
+   * soon as the video has one, even in a closed lightbox, so the videos get them only near the
+   * current slide.
+   *
+   * @param {number} index - The index of the current slide.
+   */
+  #loadPosters(index) {
+    for (const i of [index - 1, index, index + 1]) {
+      const video = this.#slides[i]?.querySelector("video");
+      if (video && !video.poster) {
+        video.poster = this.#links[i].dataset.largeSrc ?? "";
+      }
+    }
   }
 
   /**

@@ -13,12 +13,6 @@
   margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-}
-
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -174,7 +168,11 @@ a {
   padding: 0;
 }
 
-.gallery-grid + .gallery-grid {
+fram-lightbox {
+  display: block;
+}
+
+.gallery-grid + fram-lightbox > .gallery-grid {
   margin-block-start: var(--spacing-albums-media);
 }
 
@@ -431,4 +429,14 @@ a {
   block-size: 4rem;
   inline-size: 4rem;
   object-fit: cover;
+}
+
+/* Visually hidden, but announced by screen readers. */
+.lightbox__status {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
 }
