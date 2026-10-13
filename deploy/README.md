@@ -4,15 +4,15 @@
 
 ## Setup
 
-1. In *Edge Platform > Scripting*, create a middleware script, and paste `bunny-auth.ts` in it.
-2. In the script's *Env Configuration > Environment Secrets*, add `AUTH_USERS` with `user:password` pairs separated by `;`:
+1. In _Edge Platform > Scripting_, create a middleware script, and paste `bunny-auth.ts` in it.
+2. In the script's _Env Configuration > Environment Secrets_, add `AUTH_USERS` with `user:password` pairs separated by `;`:
 
 ```
 alice:correct-horse;bob:battery-staple
 ```
 
 3. Link the script to the pull zone of the gallery.
-4. In the pull zone's *General > Origin*, turn on **Run script before cache**. Without it, the script only runs on cache misses, and cached files load without a password.
+4. In the pull zone's _General > Origin_, turn on **Run script before cache**. Without it, the script only runs on cache misses, and cached files load without a password.
 5. Publish the script.
 
 ## Checks

@@ -330,8 +330,8 @@ class FramLightbox extends HTMLElement {
    * @param {MouseEvent} evt - The click.
    */
   #handleLinkClick(evt) {
-    const link = /** @type {Element} */ (evt.target).closest("a"),
-      index = link ? this.#links.indexOf(link) : -1;
+    const link = /** @type {Element} */ (evt.target).closest("a");
+    const index = link ? this.#links.indexOf(link) : -1;
     if (index === -1) {
       return;
     }
@@ -372,8 +372,8 @@ class FramLightbox extends HTMLElement {
    * @param {MouseEvent} evt - The click.
    */
   #handleStripClick(evt) {
-    const thumbnail = /** @type {Element} */ (evt.target).closest("button"),
-      index = thumbnail ? this.#thumbnails.indexOf(thumbnail) : -1;
+    const thumbnail = /** @type {Element} */ (evt.target).closest("button");
+    const index = thumbnail ? this.#thumbnails.indexOf(thumbnail) : -1;
     if (index !== -1) {
       this.#scrollToSlide(index);
     }
@@ -626,9 +626,9 @@ class FramLightbox extends HTMLElement {
    * new image loads.
    */
   #loadSlideImages() {
-    this.#slides.forEach((slide, i) => {
+    for (const [i, slide] of this.#slides.entries()) {
       this.#loadSlideImage(slide, this.#links[i]);
-    });
+    }
   }
 
   /**
@@ -697,10 +697,10 @@ class FramLightbox extends HTMLElement {
    */
   #isControlInUse() {
     const states = [
-        ...(FramLightbox.CAN_HOVER.matches ? [":hover"] : []),
-        ...(this.#isTabFocus ? [":focus-within"] : []),
-      ],
-      selector = `${FramLightbox.CONTROLS_SELECTOR}:is(${states.join(", ")})`;
+      ...(FramLightbox.CAN_HOVER.matches ? [":hover"] : []),
+      ...(this.#isTabFocus ? [":focus-within"] : []),
+    ];
+    const selector = `${FramLightbox.CONTROLS_SELECTOR}:is(${states.join(", ")})`;
     return states.length > 0 && this.#dialog.querySelector(selector) !== null;
   }
 
@@ -879,8 +879,8 @@ class FramLightbox extends HTMLElement {
    * @param {number} index - The index of the current item.
    */
   #updateStrip(index) {
-    const current = this.#thumbnails[index],
-      hasFocus = this.#part("strip").contains(document.activeElement);
+    const current = this.#thumbnails[index];
+    const hasFocus = this.#part("strip").contains(document.activeElement);
     for (const thumbnail of this.#thumbnails) {
       thumbnail.ariaCurrent = thumbnail === current ? "true" : null;
       thumbnail.tabIndex = thumbnail === current ? 0 : -1;

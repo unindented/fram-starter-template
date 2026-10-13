@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/oxlint@1.88.0/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "jsdoc", "promise"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "style": "error",
+    "restriction": "error"
+  },
+  "rules": {
+    "class-methods-use-this": "off",
+    "id-length": ["error", { "exceptions": ["i"] }],
+    "max-lines": "off",
+    "no-empty-function": ["error", { "allow": ["arrowFunctions"] }],
+    "no-inline-comments": "off",
+    "no-magic-numbers": ["error", { "ignore": [-1, 0, 1], "ignoreClassFieldInitialValues": true }],
+    "no-ternary": "off",
+    "one-var": ["error", "never"],
+    "jsdoc/require-property-description": "off",
+    "oxc/no-optional-chaining": "off",
+    "oxc/no-rest-spread-properties": "off",
+    "promise/prefer-await-to-then": "off",
+    "unicorn/no-null": "off"
+  },
+  "ignorePatterns": ["docs/"]
+}

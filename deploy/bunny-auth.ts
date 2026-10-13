@@ -29,11 +29,11 @@ BunnySDK.net.http.servePullZone().onClientRequest((ctx) => {
   }
   return Promise.resolve(
     new Response("Authentication required", {
-      status: 401,
       headers: {
         "Cache-Control": "no-store",
         "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
       },
+      status: 401,
     }),
   );
 });
