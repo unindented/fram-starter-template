@@ -2,8 +2,8 @@
 
 This is a starter template for [fram](https://github.com/unindented/fram-c17), a small static photo and video gallery generator. Fork it, add your media, and publish the generated site.
 
-| Album                                                                                   | Viewer                                                                                           |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Album | Viewer |
+| --- | --- |
 | ![Photo album with thumbnails displayed in a grid](static/images/screenshot-wide-1.jpg) | ![Photo viewer with a filmstrip of the album at the bottom](static/images/screenshot-wide-2.jpg) |
 
 ## Contents
@@ -28,11 +28,11 @@ fram.toml       Gallery title, author, directories, and image sizes.
 fram build -v
 ```
 
-The site lands in `docs/`. Run `fram config` to print the resolved configuration, and see the [fram README](https://github.com/unindented/fram-c17#usage) for every option.
+The site lands in `docs/`. `fram config` prints the resolved configuration, and the [fram README](https://github.com/unindented/fram-c17#usage) lists every option.
 
 ### Preview
 
-To rebuild the gallery whenever `fram.toml`, a template, or a static file changes, I use [`entr`](https://eradman.com/entrproject/):
+To rebuild whenever `fram.toml`, a template, or a static file changes, I use [`entr`](https://eradman.com/entrproject/):
 
 ```sh
 while sleep 0.2; do
@@ -40,9 +40,9 @@ while sleep 0.2; do
 done
 ```
 
-`entr -d` exits when you add a file to a watched directory, so the loop restarts it with the new list of files. Press Ctrl-C twice to stop.
+The loop restarts `entr` when you add a file. Press Ctrl-C twice to stop.
 
-To view the site, serve the output directory with any static server, for example:
+To view the site, serve `docs/` with any static server:
 
 ```sh
 python3 -m http.server -d docs
@@ -50,7 +50,7 @@ python3 -m http.server -d docs
 
 ## Customization
 
-- **Image sizes:** Each `[derivatives.*]` table in `fram.toml` sets a width, height, JPEG quality, and whether to crop.
+- **Image sizes:** Each `[derivatives.*]` table in `fram.toml` sets a width, height, JPEG quality, and whether to crop. Add an `xl` table (for example 1280×1280) for sharper photos in fullscreen. After a change, remember to delete the old directory in `docs/_fram/`.
 - **Layout:** Edit `templates/album.html` and the partials in `templates/partials/`.
 - **Styles and behavior:** Edit `static/css/fram.css` and `static/js/fram-lightbox.js`.
 - **App name and icons:** Edit `static/manifest.webmanifest`, and replace the icons in `static/images/` and at the top level of `static/`.
