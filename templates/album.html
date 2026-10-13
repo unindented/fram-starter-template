@@ -43,12 +43,17 @@
         <li>
           <a class="gallery-grid__item{{#is_video}} gallery-grid__item--video{{/is_video}}"
             href="{{original_url}}"
-            data-small-src="{{s.url}}"
-            data-small-width="{{s.width}}"
-            data-small-height="{{s.height}}"
-            data-large-src="{{l.url}}"
-            data-large-width="{{l.width}}"
-            data-large-height="{{l.height}}"
+            data-s-src="{{s.url}}"
+            data-s-width="{{s.width}}"
+            data-s-height="{{s.height}}"
+            data-l-src="{{l.url}}"
+            data-l-width="{{l.width}}"
+            data-l-height="{{l.height}}"
+            {{#xl}}
+            data-xl-src="{{xl.url}}"
+            data-xl-width="{{xl.width}}"
+            data-xl-height="{{xl.height}}"
+            {{/xl}}
             {{#is_video}}type="video/mp4"{{/is_video}}>
             <img class="gallery-grid__image"
               src="{{m.url}}"

@@ -85,6 +85,9 @@ h1 {
   --color-lightbox-text: var(--palette-text);
   --color-lightbox-hover: var(--palette-lavender);
   --color-lightbox-backdrop: color-mix(in srgb, var(--palette-crust) 80%, transparent);
+  --color-lightbox-fullscreen-background: black;
+  --color-lightbox-fullscreen-text: white;
+  --color-lightbox-fullscreen-scrim: color-mix(in srgb, black 50%, transparent);
 
   --space-xs: 0.25rem;
   --space-s: 0.5rem;
@@ -253,20 +256,10 @@ fram-lightbox {
   border: 0;
   border-radius: 0.5rem;
   color: var(--color-lightbox-text);
-  gap: var(--spacing-lightbox);
-  grid-template:
-    ".        toolbar  close" 2rem
-    "previous slides   next" minmax(0, 1fr)
-    "strip    strip    strip" auto
-    / 2rem minmax(0, 1fr) 2rem;
   inline-size: 90dvi;
   max-block-size: none;
   max-inline-size: none;
-  padding: var(--spacing-lightbox);
-}
-
-.lightbox:open {
-  display: grid;
+  padding: 0;
 }
 
 .lightbox::backdrop {
@@ -301,9 +294,22 @@ fram-lightbox {
   }
 }
 
-.lightbox__download,
+.lightbox__frame {
+  block-size: 100%;
+  display: grid;
+  gap: var(--spacing-lightbox);
+  grid-template:
+    ".        toolbar  close" 2rem
+    "previous slides   next" minmax(0, 1fr)
+    "strip    strip    strip" auto
+    / 2rem minmax(0, 1fr) 2rem;
+  padding: var(--spacing-lightbox);
+}
+
 .lightbox__info,
+.lightbox__fullscreen,
 .lightbox__slideshow,
+.lightbox__download,
 .lightbox__close,
 .lightbox__previous,
 .lightbox__next {
@@ -345,6 +351,7 @@ fram-lightbox {
 
 @media (hover: hover) {
   .lightbox__info:hover,
+  .lightbox__fullscreen:hover,
   .lightbox__slideshow:hover,
   .lightbox__download:hover,
   .lightbox__close:hover,
@@ -439,4 +446,97 @@ fram-lightbox {
   overflow: hidden;
   position: absolute;
   white-space: nowrap;
+}
+
+/*
+ * Fullscreen mode: the slides fill the page, and the controls float over them. All the parts share
+ * one grid cell, so the controls need a stacking order above the slides. In the fullscreen of the
+ * browser, the frame is on top of the dialog, so the frame also needs the background.
+ */
+.lightbox--fullscreen {
+  block-size: 100%;
+  border-radius: 0;
+  color: var(--color-lightbox-fullscreen-text);
+  inline-size: 100%;
+  margin: 0;
+}
+
+.lightbox--fullscreen,
+.lightbox--fullscreen .lightbox__frame {
+  background: var(--color-lightbox-fullscreen-background);
+}
+
+.lightbox--fullscreen .lightbox__frame {
+  grid-template: "slides" minmax(0, 1fr) / minmax(0, 1fr);
+  padding: 0;
+}
+
+.lightbox--fullscreen .lightbox__frame::before {
+  background: linear-gradient(var(--color-lightbox-fullscreen-scrim), transparent);
+  block-size: calc(2rem + 2 * var(--spacing-lightbox));
+  content: "";
+  grid-area: slides;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.lightbox--fullscreen
+  :is(.lightbox__actions, .lightbox__close, .lightbox__previous, .lightbox__next) {
+  grid-area: slides;
+  margin-block-start: max(var(--spacing-lightbox), env(safe-area-inset-top));
+  margin-inline: max(var(--spacing-lightbox), env(safe-area-inset-left))
+    max(var(--spacing-lightbox), env(safe-area-inset-right));
+  z-index: 1;
+}
+
+.lightbox--fullscreen :is(.lightbox__actions, .lightbox__close) {
+  align-self: start;
+}
+
+.lightbox--fullscreen .lightbox__close {
+  justify-self: end;
+}
+
+.lightbox--fullscreen :is(.lightbox__previous, .lightbox__next) {
+  align-self: center;
+  filter: drop-shadow(0 0 0.25rem var(--color-lightbox-fullscreen-scrim));
+  margin-block-start: 0;
+}
+
+.lightbox--fullscreen .lightbox__previous {
+  justify-self: start;
+}
+
+.lightbox--fullscreen .lightbox__next {
+  justify-self: end;
+}
+
+.lightbox--fullscreen .lightbox__strip {
+  display: none;
+}
+
+/* Fit the media to the page, also above its own size. */
+.lightbox--fullscreen .lightbox__media {
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.lightbox--idle {
+  cursor: none;
+}
+
+.lightbox--idle .lightbox__frame::before,
+.lightbox--idle :is(.lightbox__actions, .lightbox__close, .lightbox__previous, .lightbox__next) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox--fullscreen .lightbox__frame::before,
+  .lightbox--fullscreen
+    :is(.lightbox__actions, .lightbox__close, .lightbox__previous, .lightbox__next) {
+    transition:
+      opacity 0.3s,
+      visibility 0.3s;
+  }
 }
