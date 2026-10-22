@@ -20,3 +20,9 @@ crop = true
 width = 792
 height = 594
 quality = 85
+
+# Order of each album's child albums and of its direct media, by source filename: "asc" (default)
+# or "desc".
+# [sort]
+# albums = "desc"
+# media = "asc"
